@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DormHunt</string>
+    <string name="app_logo">App Logo</string>
+    <string name="carousel_image">Carousel Image</string>
+    <string name="welcome_text">Find your perfect dorm with ease. Browse verified listings and connect with property owners directly.</string>
+    <string name="get_started">Get Started</string>
+    <string name="welcome_title">Welcome!</string>
+    <string name="welcome_subtitle">Choose how you want to continue</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="show_password">Show password</string>
+    <string name="register_prompt">No account yet? Register here</string>
+    <string name="full_name">Full Name</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="select_role">Select your role</string>
+    <string name="role_student">Student</string>
+    <string name="role_owner">Owner</string>
+    <string name="have_account">Already have an account? Login here</string>
+</resources>

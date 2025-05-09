@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Core colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="splash_background">#172931</color>
+    
+    <color name="dark_slate">#1E2A33</color> 
+    <color name="cream">#F8EED0</color>      
+    <color name="cream_dark">#E8D9AF</color>  
+    <color name="tan_light">#D2B48C</color>   
+    <color name="tan_medium">#BF9D7A</color>  
+    <color name="tan_dark">#A67F5D</color>   
+    <color name="mint">#AAC9C0</color>        
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="primary">#172931</color>
+    <color name="grey">#757575</color>
+    
+    <color name="background_color">@color/white</color>
+    <color name="text_color_primary">#212121</color>
+    <color name="text_color_secondary">#757575</color>
+    <color name="available_color">#4CAF50</color>
+    <color name="unavailable_color">#F44336</color>
+    <color name="price_color">#2E7D32</color>  <!-- Material Design Green 800 -->
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dorm_image_height">200dp</dimen>
+    <dimen name="dorm_card_corner_radius">12dp</dimen>
+    <dimen name="dorm_card_elevation">2dp</dimen>
+</resources>

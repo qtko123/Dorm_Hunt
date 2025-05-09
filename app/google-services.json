@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "379455698048",
+    "project_id": "dormhunt-45413",
+    "storage_bucket": "dormhunt-45413.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379455698048:android:c0730ec96c16777c552265",
+        "android_client_info": {
+          "package_name": "com.example.dormhunt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCewrgOO7eW9gMyhYmjW5vd30RPNezhKoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
