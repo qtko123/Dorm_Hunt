@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:padding="20dp">
 
-        <!-- Enhanced Logo and App Name -->
         <LinearLayout
             android:id="@+id/headerLayout"
             android:layout_width="wrap_content"
@@ -45,8 +44,6 @@
                 android:letterSpacing="0.02"
                 android:elevation="2dp" />
         </LinearLayout>
-
-        <!-- Material Card Container -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/carouselCard"
             android:layout_width="0dp"
@@ -67,8 +64,6 @@
                 android:layout_height="match_parent" />
 
         </com.google.android.material.card.MaterialCardView>
-
-        <!-- Enhanced Welcome Text -->
         <TextView
             android:id="@+id/tvWelcomeText"
             android:layout_width="0dp"
@@ -85,7 +80,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Material Design Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGetStarted"
             android:layout_width="0dp"

@@ -70,7 +70,7 @@ public class OwnerDormAdapter extends RecyclerView.Adapter<OwnerDormAdapter.Dorm
             dorm.isAvailable() ? R.color.available_color : R.color.unavailable_color);
         holder.statusChip.setTextColor(context.getColor(android.R.color.white));
         if (dorm.getImagePath() != null) {
-            holder.noImageText.setVisibility(View.GONE); // Hide the "no image" text
+            holder.noImageText.setVisibility(View.GONE);
             Glide.with(context)
             .load(dorm.getImageUrl())
             .placeholder(R.drawable.default_dorm_image)
@@ -79,22 +79,21 @@ public class OwnerDormAdapter extends RecyclerView.Adapter<OwnerDormAdapter.Dorm
             @Override
             public boolean onLoadFailed(@androidx.annotation.Nullable GlideException e, Object model, Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
             Log.e("GlideError", "Image loading failed: " + e.getMessage(), e);
-            return false; // Allow the error placeholder to be shown
+            return false;
             }
 
  @Override
  public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, Target<android.graphics.drawable.Drawable> target, DataSource dataSource, boolean isFirstResource) {
- // Image loaded successfully
- return false;
- }
- })
- .into(holder.dormImage);
-        }
-        holder.itemView.setOnClickListener(v -> {
- if (listener != null) {
-                listener.onDormClick(dorm);
-            }
-        });
+         return false;
+         }
+         })
+         .into(holder.dormImage);
+                }
+                holder.itemView.setOnClickListener(v -> {
+         if (listener != null) {
+                        listener.onDormClick(dorm);
+                    }
+                });
 
         holder.editButton.setOnClickListener(v -> {
             if (listener != null) {

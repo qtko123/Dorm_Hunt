@@ -30,7 +30,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Counter Layout -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +60,6 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
-            <!-- Recent Inquiries Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- My Dorms Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

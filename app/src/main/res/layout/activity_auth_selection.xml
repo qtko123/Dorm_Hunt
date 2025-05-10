@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:padding="24dp">
 
-        <!-- Spacer at the top -->
         <Space
             android:id="@+id/topSpacer"
             android:layout_width="match_parent"
@@ -20,7 +19,6 @@
             app:layout_constraintHeight_percent="0.1"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <!-- Centered Header Layout -->
         <LinearLayout
             android:id="@+id/headerLayout"
             android:layout_width="wrap_content"
@@ -49,8 +47,6 @@
                 android:textSize="32sp"
                 android:fontFamily="@font/poppins_bold"/>
         </LinearLayout>
-
-        <!-- Welcome Messages - Centered -->
         <LinearLayout
             android:id="@+id/welcomeContainer"
             android:layout_width="match_parent"
@@ -82,7 +78,7 @@
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="48dp"/>
 
-            <!-- Button Container -->
+
             <LinearLayout
                 android:id="@+id/buttonContainer"
                 android:layout_width="match_parent"
@@ -90,7 +86,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <!-- Login Button -->
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
@@ -103,7 +99,7 @@
                     app:cornerRadius="32dp"
                     style="@style/Widget.DormHunt.Button"/>
 
-                <!-- Register Button -->
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"

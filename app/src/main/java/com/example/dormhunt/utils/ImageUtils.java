@@ -19,20 +19,13 @@ public class ImageUtils {
     
     public static String saveImage(Context context, Uri imageUri) {
         try {
-            // Generate unique filename
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             String imageFileName = "DORM_" + timeStamp + ".jpg";
-
-            // Create directory if it doesn't exist
             File directory = new File(context.getFilesDir(), IMAGE_DIRECTORY);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
-
-            // Create file
             File imageFile = new File(directory, imageFileName);
-
-            // Copy image from Uri to our app's private storage
             InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
             FileOutputStream fos = new FileOutputStream(imageFile);
             

@@ -28,6 +28,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.example.dormhunt.utils.SessionManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,13 +41,15 @@ import java.util.List;
 import java.util.Map;
 
 public class AddDormBottomSheet extends BottomSheetDialogFragment {
-    private TextInputEditText dormNameInput, descriptionInput, locationInput, priceInput;
+    private TextInputEditText dormNameInput, descriptionInput, locationInput, priceInput, maxOccupantsInput;
     private Button uploadPhotoButton;
-    private ChipGroup amenitiesChipGroup;
+    private ChipGroup amenitiesChipGroup, inclusionsChipGroup;
     private List<String> availableAmenities = Arrays.asList(
-
         "Wi-Fi", "Air Conditioning", "Study Area", "Kitchen",
         "Laundry", "Security", "CCTV", "Parking"
+    );
+    private List<String> availableInclusions = Arrays.asList(
+        "Electricity", "Water", "Gas", "Internet"
     );
     private SessionManager sessionManager;
     private FirebaseFirestore db;
@@ -73,7 +76,9 @@ public class AddDormBottomSheet extends BottomSheetDialogFragment {
         locationInput = view.findViewById(R.id.locationInput);
         uploadPhotoButton = view.findViewById(R.id.uploadPhotoButton);
         priceInput = view.findViewById(R.id.priceInput);
+        maxOccupantsInput = view.findViewById(R.id.maxOccupantsInput);
         amenitiesChipGroup = view.findViewById(R.id.amenitiesChipGroup);
+        inclusionsChipGroup = view.findViewById(R.id.inclusionsChipGroup);
         submitButton = view.findViewById(R.id.submitButton);
         dormImageView = view.findViewById(R.id.dormImageView);
 
@@ -82,10 +87,11 @@ public class AddDormBottomSheet extends BottomSheetDialogFragment {
         });
         
         setupAmenityChips();
+        setupInclusionChips();
         
         submitButton.setOnClickListener(v -> {
             if (validateInputs()) {
-                saveDormToFirestore();
+                saveDorm();
             }
         });
 
@@ -146,6 +152,15 @@ public class AddDormBottomSheet extends BottomSheetDialogFragment {
         }
     }
 
+    private void setupInclusionChips() {
+        for (String inclusion : availableInclusions) {
+            Chip chip = new Chip(requireContext());
+            chip.setText(inclusion);
+            chip.setCheckable(true);
+            inclusionsChipGroup.addView(chip);
+        }
+    }
+
     private boolean validateInputs() {
         boolean isValid = true;
 
@@ -165,6 +180,10 @@ public class AddDormBottomSheet extends BottomSheetDialogFragment {
             priceInput.setError("Required");
             isValid = false;
         }
+        if (TextUtils.isEmpty(maxOccupantsInput.getText())) {
+            maxOccupantsInput.setError("Required");
+            isValid = false;
+        }
 
         return isValid;
     }
@@ -180,22 +199,54 @@ public class AddDormBottomSheet extends BottomSheetDialogFragment {
         return selectedAmenities;
     }
 
-    private void saveDormToFirestore() {
-        String ownerId = sessionManager.getUserId();
-        if (ownerId == null) {
-            Toast.makeText(getContext(), "Please login first", Toast.LENGTH_SHORT).show();
+    private List<String> getSelectedInclusions() {
+        List<String> selectedInclusions = new ArrayList<>();
+        for (int i = 0; i < inclusionsChipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) inclusionsChipGroup.getChildAt(i);
+            if (chip.isChecked()) {
+                selectedInclusions.add(chip.getText().toString());
+            }
+        }
+        return selectedInclusions;
+    }
+
+    private void saveDorm() {
+        String name = dormNameInput.getText().toString().trim();
+        String description = descriptionInput.getText().toString().trim();
+        String location = locationInput.getText().toString().trim();
+        String priceStr = priceInput.getText().toString().trim();
+        String maxOccupantsStr = maxOccupantsInput.getText().toString().trim();
+        List<String> selectedAmenities = getSelectedAmenities();
+        List<String> selectedInclusions = getSelectedInclusions();
+
+        if (name.isEmpty() || description.isEmpty() || location.isEmpty() 
+            || priceStr.isEmpty() || maxOccupantsStr.isEmpty()) {
+            Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        submitButton.setEnabled(false);
-        submitButton.setText("Adding dorm...");
+        double price = Double.parseDouble(priceStr);
+        int maxOccupants = Integer.parseInt(maxOccupantsStr);
 
+        Map<String, Object> dormData = new HashMap<>();
+        dormData.put("name", name);
+        dormData.put("description", description);
+        dormData.put("location", location);
+        dormData.put("price", price);
+        dormData.put("maxOccupants", maxOccupants);
+        dormData.put("currentOccupants", 0);
+        dormData.put("isAvailable", true);
+        dormData.put("amenities", selectedAmenities);
+        dormData.put("inclusions", selectedInclusions);
+        dormData.put("createdAt", FieldValue.serverTimestamp());
+        dormData.put("ownerId", FirebaseAuth.getInstance().getCurrentUser().getUid());
         if (selectedImageUri != null) {
             StorageReference imageRef = storageRef.child("dorm_images/" + System.currentTimeMillis() + ".jpg");
             imageRef.putFile(selectedImageUri)
                 .addOnSuccessListener(taskSnapshot -> {
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        saveDormDataToFirestore(ownerId, uri.toString());
+                        dormData.put("imageUrl", uri.toString());
+                        saveDormDataToFirestore(dormData);
                     }).addOnFailureListener(e -> {
                         handleFailure("Failed to get image download URL: " + e.getMessage());
                     });
@@ -204,30 +255,15 @@ public class AddDormBottomSheet extends BottomSheetDialogFragment {
                     handleFailure("Image upload failed: " + e.getMessage());
                 });
         } else {
-            saveDormDataToFirestore(ownerId, null);
+            saveDormDataToFirestore(dormData);
         }
     }
 
-    private void saveDormDataToFirestore(String ownerId, String imageUrl) {
-        Map<String, Object> dorm = new HashMap<>();
-        dorm.put("ownerId", ownerId);
-        dorm.put("name", dormNameInput.getText().toString());
-        dorm.put("description", descriptionInput.getText().toString());
-        dorm.put("location", locationInput.getText().toString());
-        dorm.put("price", Double.parseDouble(priceInput.getText().toString()));
-        dorm.put("inclusions", getSelectedAmenities());
-        dorm.put("maxOccupants", 4);
-        dorm.put("currentOccupants", 0);
-        dorm.put("isAvailable", true);
-        dorm.put("createdAt", FieldValue.serverTimestamp());
-        if (imageUrl != null) {
-            dorm.put("imageUrl", imageUrl);
-        }
-
-        db.collection("dorms").add(dorm)
+    private void saveDormDataToFirestore(Map<String, Object> dormData) {
+        db.collection("dorms").add(dormData)
             .addOnSuccessListener(documentReference -> {
                 Toast.makeText(getContext(), "Dorm added successfully", Toast.LENGTH_SHORT).show();
-                dismiss(); // Dismiss the bottom sheet on success
+                dismiss();
             })
             .addOnFailureListener(e -> {
                 submitButton.setEnabled(true);

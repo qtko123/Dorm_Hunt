@@ -16,7 +16,6 @@
             android:layout_height="match_parent"
             android:padding="24dp">
 
-            <!-- Header Layout -->
             <LinearLayout
                 android:id="@+id/headerLayout"
                 android:layout_width="wrap_content"
@@ -46,7 +45,6 @@
                     android:fontFamily="@font/poppins_bold"/>
             </LinearLayout>
 
-            <!-- Registration Form Container -->
             <LinearLayout
                 android:id="@+id/registrationContainer"
                 android:layout_width="match_parent"
@@ -54,8 +52,6 @@
                 android:orientation="vertical"
                 android:layout_marginTop="32dp"
                 app:layout_constraintTop_toBottomOf="@id/headerLayout">
-
-                <!-- Full Name Input -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/fullNameInputLayout"
                     android:layout_width="match_parent"
@@ -76,7 +72,6 @@
                         android:inputType="textPersonName"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Email Input -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/emailInputLayout"
                     android:layout_width="match_parent"
@@ -97,7 +92,6 @@
                         android:inputType="textEmailAddress"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Contact Number Input -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/contactNumberInputLayout"
                     android:layout_width="match_parent"
@@ -118,7 +112,7 @@
                         android:inputType="phone"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Password Input -->
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/passwordInputLayout"
                     android:layout_width="match_parent"
@@ -140,7 +134,7 @@
                         android:inputType="textPassword"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Confirm Password Input -->
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/confirmPasswordInputLayout"
                     android:layout_width="match_parent"
@@ -162,7 +156,7 @@
                         android:inputType="textPassword"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Role Selection -->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -194,7 +188,7 @@
                         android:text="@string/role_owner"/>
                 </RadioGroup>
 
-                <!-- Register Button -->
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
@@ -207,7 +201,7 @@
                     app:cornerRadius="32dp"
                     style="@style/Widget.DormHunt.Button"/>
 
-                <!-- Login Link -->
+
                 <TextView
                     android:id="@+id/loginLink"
                     android:layout_width="wrap_content"

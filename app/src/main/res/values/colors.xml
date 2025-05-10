@@ -25,5 +25,5 @@
     <color name="text_color_secondary">#757575</color>
     <color name="available_color">#4CAF50</color>
     <color name="unavailable_color">#F44336</color>
-    <color name="price_color">#2E7D32</color>  <!-- Material Design Green 800 -->
+    <color name="price_color">#2E7D32</color>
 </resources>

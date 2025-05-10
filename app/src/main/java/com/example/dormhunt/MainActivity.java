@@ -21,19 +21,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialize views
         viewPager = findViewById(R.id.carouselViewPager);
         btnGetStarted = findViewById(R.id.btnGetStarted);
-
-        // Setup carousel images
         List<Integer> slideImages = new ArrayList<>();
         slideImages.add(R.drawable.slideshow_1);
         slideImages.add(R.drawable.slideshow_2);
         slideImages.add(R.drawable.slideshow_3);
         slideImages.add(R.drawable.slideshow_4);
-
-        // Set adapter for ViewPager2
         viewPager.setAdapter(new SlideAdapter(slideImages));
 
         btnGetStarted.setOnClickListener(new View.OnClickListener() {

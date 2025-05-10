@@ -55,5 +55,10 @@
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             android:exported="true" />
 
+        <activity
+            android:name=".PricingPlansActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+
     </application>
 </manifest>

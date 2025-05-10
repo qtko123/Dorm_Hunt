@@ -95,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Logging in...");
         progressDialog.show();
         btnLogin.setEnabled(false);
-
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -105,7 +104,18 @@ public class LoginActivity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                     if (documentSnapshot.exists()) {
                                         String userRole = documentSnapshot.getString("role");
-                                        handleLoginSuccess(userId, userRole);
+                                        if ("Owner".equals(userRole)) {
+                                            if (documentSnapshot.contains("subscriptionPlan")) {
+                                                handleLoginSuccess(userId, userRole);
+                                            } else {
+                                                sessionManager.saveUserId(userId);
+                                                Intent intent = new Intent(LoginActivity.this, PricingPlansActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        } else {
+                                            handleLoginSuccess(userId, userRole);
+                                        }
                                     } else {
                                         mAuth.signOut();
                                         Toast.makeText(LoginActivity.this,
@@ -133,10 +143,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleLoginSuccess(String userId, String userRole) {
-        // Save user ID to session
         sessionManager.saveUserId(userId);
-
-        // Navigate based on user role
         Intent intent;
         if (userRole.equals("Student")) {
             intent = new Intent(LoginActivity.this, StudentHomeActivity.class);

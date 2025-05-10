@@ -44,11 +44,8 @@ public class DormDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dorm_details);
-
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
-        // Setup toolbar with back button
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,11 +56,7 @@ public class DormDetailsActivity extends AppCompatActivity {
             finish();
             return;
         }
-
-        // Get user role from intent
         userRole = getIntent().getStringExtra("userRole");
-
-        // Show/hide inquiry button based on role
         if ("student".equals(userRole)) {
             inquiryButton.setVisibility(View.VISIBLE);
         } else if ("owner".equals(userRole)) {
@@ -75,7 +68,6 @@ public class DormDetailsActivity extends AppCompatActivity {
 
         ExtendedFloatingActionButton inquiryFab = findViewById(R.id.inquiryFab);
         inquiryFab.setOnClickListener(v -> {
-            // Handle inquiry action
             showInquiryDialog();
         });
     }
@@ -101,9 +93,7 @@ public class DormDetailsActivity extends AppCompatActivity {
                 Dorm dorm = documentSnapshot.toObject(Dorm.class);
                 if (dorm != null) {
                     currentDorm = dorm;
-                    dorm.setId(documentSnapshot.getId()); // Set the dorm ID
-
-                    // Get owner name using ownerId
+                    dorm.setId(documentSnapshot.getId());
                     String ownerId = dorm.getOwnerId();
                     if (ownerId != null) {
                         db.collection("users").document(ownerId)
@@ -111,7 +101,7 @@ public class DormDetailsActivity extends AppCompatActivity {
                             .addOnSuccessListener(userDoc -> {
                                 if (userDoc.exists()) {
                                     String ownerName = userDoc.getString("fullName");
-                                    dorm.setOwnerName(ownerName); // Make sure to add ownerName field to Dorm class
+                                    dorm.setOwnerName(ownerName);
                                 }
                                 displayDormDetails(dorm);
                             })
@@ -133,8 +123,6 @@ public class DormDetailsActivity extends AppCompatActivity {
         dormPrice.setText(String.format(Locale.getDefault(), "₱%.2f", dorm.getPrice()));
         dormDescription.setText(dorm.getDescription());
         dormLocation.setText(dorm.getLocation());
-        
-        // Set fixed value of 120 views
         TextView viewCount = findViewById(R.id.occupancyStatus);
         viewCount.setText("120 views");
         viewCount.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_visibility, 0, 0, 0);
@@ -220,10 +208,10 @@ public class DormDetailsActivity extends AppCompatActivity {
         Inquiry inquiry = new Inquiry();
         inquiry.setId(inquiryId);
         inquiry.setUserId(userId);
-        inquiry.setDormId(dorm.getId()); // Now using the properly set dorm ID
+        inquiry.setDormId(dorm.getId());
         inquiry.setDormName(dorm.getName());
         inquiry.setOwnerId(dorm.getOwnerId());
-        inquiry.setOwnerName(dorm.getOwnerName()); // Add ownerName to Inquiry class
+        inquiry.setOwnerName(dorm.getOwnerName());
         inquiry.setStatus("pending");
         inquiry.setPrice(dorm.getPrice());
         inquiry.setPaymentMethod(paymentMethod);

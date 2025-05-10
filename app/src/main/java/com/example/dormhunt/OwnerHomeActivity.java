@@ -298,28 +298,20 @@ public class OwnerHomeActivity extends AppCompatActivity implements OwnerDormAda
 
     private void deleteDorm(Dorm dorm) {
         if (dorm == null || dorm.getId() == null) return;
-
-        // First delete all inquiries related to this dorm
         db.collection("inquiries")
             .whereEqualTo("dormId", dorm.getId())
             .get()
             .addOnSuccessListener(querySnapshot -> {
                 WriteBatch batch = db.batch();
-                
-                // Add inquiry deletions to batch
                 for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                     batch.delete(document.getReference());
                 }
-                
-                // Add dorm deletion to batch
                 batch.delete(db.collection("dorms").document(dorm.getId()));
-                
-                // Execute batch
                 batch.commit()
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this, "Dorm and related inquiries deleted successfully", 
                             Toast.LENGTH_SHORT).show();
-                        loadOwnerDorms(); // Refresh the list
+                        loadOwnerDorms();
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(this, "Error deleting dorm: " + e.getMessage(), 

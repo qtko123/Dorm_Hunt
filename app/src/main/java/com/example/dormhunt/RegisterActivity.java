@@ -31,15 +31,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
-        // Initialize views
         initializeViews();
-        
-        // Set click listeners
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
-                finish(); // Close registration activity
+                finish();
             }
         });
     }
@@ -72,15 +66,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean validateInputs() {
         boolean isValid = true;
-
-        // Validate Full Name
         String fullName = fullNameInput.getText().toString().trim();
         if (fullName.isEmpty()) {
             fullNameInput.setError("Full name is required");
             isValid = false;
         }
-
-        // Validate Email
         String email = emailInput.getText().toString().trim();
         if (email.isEmpty()) {
             emailInput.setError("Email is required");
@@ -89,15 +79,11 @@ public class RegisterActivity extends AppCompatActivity {
             emailInput.setError("Enter a valid email address");
             isValid = false;
         }
-
-        // Validate Contact Number
         String contact = contactInput.getText().toString().trim();
         if (contact.isEmpty()) {
             contactInput.setError("Contact number is required");
             isValid = false;
         }
-
-        // Validate Password
         String password = passwordInput.getText().toString();
         if (password.isEmpty()) {
             passwordInput.setError("Password is required");
@@ -106,8 +92,6 @@ public class RegisterActivity extends AppCompatActivity {
             passwordInput.setError("Password must be at least 6 characters");
             isValid = false;
         }
-
-        // Validate Confirm Password
         String confirmPassword = confirmPasswordInput.getText().toString();
         if (confirmPassword.isEmpty()) {
             confirmPasswordInput.setError("Please confirm your password");
@@ -116,13 +100,8 @@ public class RegisterActivity extends AppCompatActivity {
             confirmPasswordInput.setError("Passwords do not match");
             isValid = false;
         }
-
-        // Validate Role Selection
         if (roleRadioGroup.getCheckedRadioButtonId() == -1) {
-            // No role selected
             isValid = false;
-            // Show error message
-            // You can add a TextView for error message or show a Toast
         }
 
         return isValid;
@@ -137,8 +116,6 @@ public class RegisterActivity extends AppCompatActivity {
         int selectedId = roleRadioGroup.getCheckedRadioButtonId();
         RadioButton selectedRole = findViewById(selectedId);
         String userRole = selectedRole.getText().toString();
-
-        // Create confirmation dialog
         new MaterialAlertDialogBuilder(this)
             .setTitle("Confirm Registration")
             .setMessage("Please verify your details:\n\n" +
@@ -147,7 +124,6 @@ public class RegisterActivity extends AppCompatActivity {
                     "Contact: " + contact + "\n" +
                     "Role: " + userRole)
             .setPositiveButton("Confirm", (dialog, which) -> {
-                // Proceed with registration
                 createFirebaseUser(email, password, fullName, contact, userRole);
             })
             .setNegativeButton("Edit", (dialog, which) -> {
@@ -158,7 +134,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void createFirebaseUser(String email, String password, String fullName, 
                                   String contact, String userRole) {
-        // Show progress dialog
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Creating account...");
         progressDialog.show();
