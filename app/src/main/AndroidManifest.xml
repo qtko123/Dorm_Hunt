@@ -46,6 +46,8 @@
             android:name=".StudentHomeActivity"
             android:exported="true"/>
 
+        <activity android:name=".OwnerDormDetailsActivity"
+            android:exported="true"/>
         <activity
             android:name=".OwnerHomeActivity"
             android:exported="true"/>
