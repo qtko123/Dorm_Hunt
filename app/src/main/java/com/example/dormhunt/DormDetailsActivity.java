@@ -37,6 +37,8 @@ public class DormDetailsActivity extends AppCompatActivity {
     private TextView dormName, dormPrice, dormDescription, dormLocation, occupancyStatus, noImageText;
     private Chip statusChip, genderChip;
     private ViewGroup amenitiesContainer, inclusionsContainer;
+    private Button inquiryButton;
+    private String userRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,16 @@ public class DormDetailsActivity extends AppCompatActivity {
         if (dormId == null) {
             finish();
             return;
+        }
+
+        // Get user role from intent
+        userRole = getIntent().getStringExtra("userRole");
+
+        // Show/hide inquiry button based on role
+        if ("student".equals(userRole)) {
+            inquiryButton.setVisibility(View.VISIBLE);
+        } else if ("owner".equals(userRole)) {
+            inquiryButton.setVisibility(View.GONE);
         }
 
         initializeViews();
