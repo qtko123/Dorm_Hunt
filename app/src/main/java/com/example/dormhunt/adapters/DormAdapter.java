@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dormhunt.R;
 import com.example.dormhunt.models.Dorm;
+import com.bumptech.glide.Glide;
 import com.example.dormhunt.utils.ImageUtils;
 import com.google.android.material.chip.Chip;
 
@@ -52,20 +53,29 @@ public class DormAdapter extends RecyclerView.Adapter<DormAdapter.DormViewHolder
         holder.availabilityChip.setChipBackgroundColorResource(
             dorm.isAvailable() ? R.color.available_color : R.color.unavailable_color
         );
-        if (dorm.getImagePath() != null) {
-            Bitmap bitmap = ImageUtils.loadImage(context, dorm.getImagePath());
-            if (bitmap != null) {
-                holder.dormImage.setImageBitmap(bitmap);
+
+        // Load image using Glide from Firebase Storage URL
+        Glide.with(context)
+             .load(dorm.getImageUrl())
+             .placeholder(R.drawable.default_dorm_image) // Placeholder image
+             .error(R.drawable.default_dorm_image) // Error image if loading fails
+             .into(holder.dormImage);
+
+
+ if (dorm.getImagePath() != null) {
+ Bitmap bitmap = ImageUtils.loadImage(context, dorm.getImagePath());
+ if (bitmap != null) {
+ holder.dormImage.setImageBitmap(bitmap);
             } else {
-                holder.dormImage.setImageResource(R.drawable.default_dorm_image);
+ holder.dormImage.setImageResource(R.drawable.default_dorm_image);
             }
         } else if (dorm.getImageResourceName() != null) {
-            int resourceId = context.getResources().getIdentifier(
-                dorm.getImageResourceName(), 
-                "drawable", 
-                context.getPackageName()
-            );
-            holder.dormImage.setImageResource(resourceId > 0 ? resourceId : R.drawable.default_dorm_image);
+ int resourceId = context.getResources().getIdentifier(
+ dorm.getImageResourceName(),
+ "drawable",
+ context.getPackageName()
+ );
+ holder.dormImage.setImageResource(resourceId > 0 ? resourceId : R.drawable.default_dorm_image);
         } else {
             holder.dormImage.setImageResource(R.drawable.default_dorm_image);
         }

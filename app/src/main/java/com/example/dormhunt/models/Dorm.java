@@ -26,6 +26,7 @@ public class Dorm {
     private int pendingCount;
     private int approvedCount;
     private String ownerName;
+    private String imageUrl;
 
     // Empty constructor for Firestore
     public Dorm() {
@@ -34,12 +35,13 @@ public class Dorm {
     }
 
     // Constructor
-    public Dorm(String ownerId, String name, String description, String location, 
-                double price, List<String> amenities, String imagePath) {
+    public Dorm(String ownerId, String name, String description, String location,
+ double price, List<String> amenities, String imagePath, String imageUrl) {
         this.ownerId = ownerId;
         this.name = name;
         this.description = description;
         this.location = location;
+ this.imageUrl = imageUrl;
         this.price = price;
         this.amenities = amenities;
         this.imagePath = imagePath;
@@ -94,6 +96,9 @@ public class Dorm {
     public void setImagePath(String imagePath) { this.imagePath = imagePath; }
     
     public int getPendingCount() { return pendingCount; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public void setPendingCount(int pendingCount) { this.pendingCount = pendingCount; }
     
     public int getApprovedCount() { return approvedCount; }
