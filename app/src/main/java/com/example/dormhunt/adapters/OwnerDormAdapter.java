@@ -3,7 +3,6 @@ package com.example.dormhunt.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dormhunt.R;
 import com.example.dormhunt.models.Dorm;
 import com.example.dormhunt.utils.ImageUtils;
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -64,21 +64,11 @@ public class OwnerDormAdapter extends RecyclerView.Adapter<OwnerDormAdapter.Dorm
             dorm.isAvailable() ? R.color.available_color : R.color.unavailable_color);
         holder.statusChip.setTextColor(context.getColor(android.R.color.white));
         if (dorm.getImagePath() != null) {
-            Bitmap bitmap = ImageUtils.loadImage(context, dorm.getImagePath());
-            if (bitmap != null) {
-                holder.dormImage.setImageBitmap(bitmap);
-                holder.noImageText.setVisibility(View.GONE);
-            } else {
-                holder.dormImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                holder.dormImage.setBackgroundColor(context.getColor(R.color.grey));
-                holder.dormImage.setImageResource(android.R.drawable.ic_menu_gallery);
-                holder.noImageText.setVisibility(View.VISIBLE);
-            }
-        } else {
-            holder.dormImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            holder.dormImage.setBackgroundColor(context.getColor(R.color.grey));
-            holder.dormImage.setImageResource(android.R.drawable.ic_menu_gallery);
-            holder.noImageText.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(dorm.getImageUrl())
+                    .placeholder(R.drawable.default_dorm_image)
+                    .error(R.drawable.default_dorm_image)
+                    .into(holder.dormImage);
         }
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -112,8 +102,6 @@ public class OwnerDormAdapter extends RecyclerView.Adapter<OwnerDormAdapter.Dorm
         Chip statusChip;
         View analyticsContainer, viewCountContainer;
         ImageView editButton, deleteButton;
-        TextView noImageText;
-
         DormViewHolder(View itemView) {
             super(itemView);
             dormImage = itemView.findViewById(R.id.dormImage);
