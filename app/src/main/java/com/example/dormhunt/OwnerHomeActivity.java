@@ -247,7 +247,6 @@ public class OwnerHomeActivity extends AppCompatActivity implements OwnerDormAda
                 transaction.update(dormRef, "currentOccupants", currentOccupants + 1);
                 transaction.update(db.collection("inquiries").document(inquiry.getId()), 
                     "status", newStatus);
-
                 return null;
             }).addOnSuccessListener(result -> {
                 if (result == null) {

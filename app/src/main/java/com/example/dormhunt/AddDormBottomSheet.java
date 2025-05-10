@@ -136,14 +136,6 @@ public class AddDormBottomSheet extends BottomSheetDialogFragment {
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
-    private void setupAmenityChips() {
-        for (String amenity : availableAmenities) {
-            Chip chip = new Chip(requireContext());
-            chip.setText(amenity);
-            chip.setCheckable(true);
-            amenitiesChipGroup.addView(chip);
-        }
-    }
 
     private void setupAmenityChips() {
         for (String amenity : availableAmenities) {

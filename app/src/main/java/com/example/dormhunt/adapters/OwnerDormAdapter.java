@@ -4,12 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.DataSource;
@@ -19,7 +19,6 @@ import com.bumptech.glide.request.target.Target;
 import com.example.dormhunt.R;
 import com.example.dormhunt.models.Dorm;
 import android.view.View;
-import com.example.dormhunt.OwnerDormDetailsActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 
@@ -68,20 +67,20 @@ public class OwnerDormAdapter extends RecyclerView.Adapter<OwnerDormAdapter.Dorm
             "%d/%d occupied", dorm.getCurrentOccupants(), dorm.getMaxOccupants()));
         holder.statusChip.setText(dorm.getAvailabilityStatus());
         holder.statusChip.setChipBackgroundColorResource(
- dorm.isAvailable() ? R.color.available_color : R.color.unavailable_color);
+            dorm.isAvailable() ? R.color.available_color : R.color.unavailable_color);
         holder.statusChip.setTextColor(context.getColor(android.R.color.white));
- if (dorm.getImageUrl() != null && !dorm.getImageUrl().isEmpty()) {
+        if (dorm.getImagePath() != null) {
             holder.noImageText.setVisibility(View.GONE); // Hide the "no image" text
             Glide.with(context)
- .load(dorm.getImageUrl())
- .placeholder(R.drawable.default_dorm_image)
- .error(R.drawable.default_dorm_image)
- .listener(new RequestListener<android.graphics.drawable.Drawable>() {
- @Override
- public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
- Log.e("GlideError", "Image loading failed: " + e.getMessage(), e);
- return false; // Allow the error placeholder to be shown
- }
+            .load(dorm.getImageUrl())
+            .placeholder(R.drawable.default_dorm_image)
+            .error(R.drawable.default_dorm_image)
+            .listener(new RequestListener<android.graphics.drawable.Drawable>() {
+            @Override
+            public boolean onLoadFailed(@androidx.annotation.Nullable GlideException e, Object model, Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
+            Log.e("GlideError", "Image loading failed: " + e.getMessage(), e);
+            return false; // Allow the error placeholder to be shown
+            }
 
  @Override
  public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, Target<android.graphics.drawable.Drawable> target, DataSource dataSource, boolean isFirstResource) {
@@ -92,12 +91,6 @@ public class OwnerDormAdapter extends RecyclerView.Adapter<OwnerDormAdapter.Dorm
  .into(holder.dormImage);
         }
         holder.itemView.setOnClickListener(v -> {
-            // Changed to open OwnerDormDetailsActivity
-            android.content.Intent intent = new android.content.Intent(context, OwnerDormDetailsActivity.class);
-            intent.putExtra("dormId", dorm.getId());
-            context.startActivity(intent);
-
-            // Original onDormClick listener - keep if you still need a custom click handler in the activity
  if (listener != null) {
                 listener.onDormClick(dorm);
             }
@@ -125,7 +118,7 @@ public class OwnerDormAdapter extends RecyclerView.Adapter<OwnerDormAdapter.Dorm
 
     static class DormViewHolder extends RecyclerView.ViewHolder {
         ImageView dormImage;
-        TextView dormName, dormPrice, viewCount, occupancyText;
+        TextView dormName, dormPrice, viewCount, occupancyText,noImageText;
         Chip statusChip;
         View analyticsContainer, viewCountContainer;
         ImageView editButton, deleteButton;
