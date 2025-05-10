@@ -59,7 +59,6 @@ public class DormDetailsActivity extends AppCompatActivity {
         }
 
         initializeViews();
-        setupDeleteButton();
         loadDormDetails();
 
         ExtendedFloatingActionButton inquiryFab = findViewById(R.id.inquiryFab);
@@ -83,43 +82,6 @@ public class DormDetailsActivity extends AppCompatActivity {
         noImageText = findViewById(R.id.noImageText);
     }
 
-    private void setupDeleteButton() {
-        Button deleteButton = findViewById(R.id.deleteButton);
-        String currentUserId = mAuth.getCurrentUser().getUid();
-        
-        // Only show delete button to owner
-        if (currentDorm != null && currentDorm.getOwnerId().equals(currentUserId)) {
-            deleteButton.setVisibility(View.VISIBLE);
-            deleteButton.setOnClickListener(v -> showDeleteConfirmation());
-        } else {
-            deleteButton.setVisibility(View.GONE);
-        }
-    }
-
-    private void showDeleteConfirmation() {
-        new MaterialAlertDialogBuilder(this)
-            .setTitle("Delete Dorm")
-            .setMessage("Are you sure you want to delete this dorm? This action cannot be undone.")
-            .setPositiveButton("Delete", (dialog, which) -> deleteDorm())
-            .setNegativeButton("Cancel", null)
-            .show();
-    }
-
-    private void deleteDorm() {
-        if (currentDorm == null || currentDorm.getId() == null) return;
-
-        db.collection("dorms").document(currentDorm.getId())
-            .delete()
-            .addOnSuccessListener(aVoid -> {
-                Toast.makeText(this, "Dorm deleted successfully", Toast.LENGTH_SHORT).show();
-                finish();
-            })
-            .addOnFailureListener(e -> {
-                Toast.makeText(this, "Error deleting dorm: " + e.getMessage(), 
-                    Toast.LENGTH_SHORT).show();
-            });
-    }
-
     private void loadDormDetails() {
         db.collection("dorms").document(dormId)
             .get()
@@ -128,7 +90,6 @@ public class DormDetailsActivity extends AppCompatActivity {
                 if (dorm != null) {
                     currentDorm = dorm;
                     dorm.setId(documentSnapshot.getId()); // Set the dorm ID
-                    setupDeleteButton(); // Add this line
 
                     // Get owner name using ownerId
                     String ownerId = dorm.getOwnerId();
